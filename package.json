@@ -1,0 +1,25 @@
+{
+    "name": "project-name",
+    "license": "GIT",
+    "description": "project created by thinkjs",
+    "version": "0.1.0",
+    "author": {},
+    "dependencies": {
+        "asn1": "*",
+        "cheerio": "^0.18.0",
+        "mkdirp": "^0.5.0",
+        "request": "^2.51.0",
+        "async": "^0.9.0",
+        "iconv-lite": "^0.4.6",
+        "thinkjs": "1.2.11"
+    },
+    "keywords": [],
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "engines": {
+        "node": ">=0.10.0"
+    },
+    "readmeFilename": "README.md"
+}

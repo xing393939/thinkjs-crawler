@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    <meta name=renderer content=webkit>
+    <meta name=viewport content="width=device-width, initial-scale=1.0">
+    <title>thinkjs里的websocket测试DEMO</title>
+    <link rel=stylesheet href="/resource/css/bootstrap.css?v=43e06.css">
+    <link href="/resource/css/github.css?v=cd946.css" rel=stylesheet>
+    <script src="/resource/js/jquery.js?v=ff447.js"></script>
+    <script src='/resource/js/bootstrap.js?v=5e4c3.js'></script>
+    <style>.data-list {
+        line-height: 28px;
+        padding: 10px
+    }
+
+    .data-item {
+        line-height: 30px
+    }</style>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top" role=navigation>
+    <div class=container>
+        <div class="navbar-header">
+            <button type=button class="navbar-toggle collapsed" data-toggle=collapse data-target="#navbar"
+                    aria-expanded=false aria-controls=navbar><span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="/doc/websocket.html">thinkjs里的websocket测试DEMO</a></div>
+    </div>
+</nav>
+<div class=container style="margin-top:60px"><h2>聊天室</h2>
+    <div class="data-list" style="background:#efefef;height:400px;overflow:auto"></div>
+    <form role=form class="form-inline" style="margin-top:10px" onsubmit="return false">
+        <div class="form-group"><input type=text class="form-control" id=textField style="width:400px"></div>
+        <button type=submit class="btn btn-primary" id=submitBtn>提交</button>
+    </form>
+</div>
+<script>$(function () {
+    function n() {
+        var e = new WebSocket("ws://" + location.hostname + ":3000/websocket/index/open"), n = $.Deferred();
+        return e.onopen = function (r) {
+            $('<div class="alert alert-success">\u8fde\u63a5\u6210\u529f\uff0c\u5f00\u59cb\u804a\u5929\u5427 ^_^</div>').appendTo(i), n.resolve(e), e.onmessage = function (e) {
+                var n = JSON.parse(e.data).result;
+                console.log(n);
+                var r = '<div class="data-item"><span class="label label-primary">' + n.name + "</span> ";
+                r += "<span>" + t(n.text) + "</span></div>", $(r).appendTo(i), i[0].scrollTop = 1e8
+            }, e.onclose = function (t) {
+                e = null, console.log("websocket closed")
+            }
+        }, n
+    }
+
+    var e = {"<": "&lt;", ">": "&gt;", '"': "&quote;", "'": "&#39;"}, t = function (t) {
+        return(t + "").replace(/[<>'"]/g, function (t) {
+            return e[t]
+        })
+    }, r = n(), i = $(".data-list"), s = $("#textField").select();
+    $("#submitBtn").click(function () {
+        var e = s.val().trim();
+        if (!e)return s.focus();
+        r.then(function (t) {
+            s.val("").focus(), t.send(JSON.stringify({jsonrpc: "2.0", method: "/websocket/index/message", params: {text: e}, id: 1}))
+        })
+    })
+})</script>
